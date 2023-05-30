@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
-import ra.model.Product;
+import ra.model.PhoneNumber;
 import ra.service.IProductService;
 
 @Controller
@@ -22,7 +22,7 @@ public class ProductController {
 
     @GetMapping(value = {"/", "/product"})
     public ModelAndView listProduct(@PageableDefault(sort = "name", size = 3) Pageable pageable) {
-        Page<Product> productPage = productService.findAll(pageable);
+        Page<PhoneNumber> productPage = productService.findAll(pageable);
         ModelAndView modelAndView = new ModelAndView("/product/list");
         modelAndView.addObject("pageProduct", productPage);
         return modelAndView;
@@ -31,13 +31,13 @@ public class ProductController {
     @GetMapping("/create/product")
     public ModelAndView showFormCreateProduct() {
         ModelAndView modelAndView = new ModelAndView("/product/add");
-        modelAndView.addObject("createProductForm", new Product());
+        modelAndView.addObject("createProductForm", new PhoneNumber());
         return modelAndView;
     }
 
     @PostMapping("/create/product")
     public String createProduct(@Validated
-                                @ModelAttribute("createProductForm") Product product, BindingResult bindingResult) {
+                                @ModelAttribute("createProductForm") PhoneNumber product, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             return "/product/add";
         }
@@ -47,7 +47,7 @@ public class ProductController {
 
     @GetMapping("/search")
     public ModelAndView searchProduct(@RequestParam("search") String search, Pageable pageable) {
-        Page<Product> productPage;
+        Page<PhoneNumber> productPage;
         if (!search.trim().equals("")) {
             productPage = productService.findByNameProduct(search, pageable);
         } else {
